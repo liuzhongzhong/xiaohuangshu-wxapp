@@ -1,0 +1,46 @@
+<form bindsubmit="formSubmit" bindreset="formReset">
+  <view class="form">
+    <view class="cells big-cells">
+      <input placeholder="填写相册名称" placeholder-class="placeholder-class" name="name" value="{{albumName}}"></input>
+    </view>
+    <view class="cells {{isPrivate == true ? 'last-line' : ''}}">
+      <view class="cells-title">
+        <text>设置为私密图册</text>
+      </view>
+      <view class="input-area">
+        <switch class="switch-class" bindchange="switchPrivate" name="is_private" checked="{{isPrivate}}" />
+      </view>
+    </view>
+    <block wx:if="{{isPrivate == false}}">
+      <view class="cells {{isPay == false ? 'last-line' : ''}}">
+        <view class="cells-title">
+          <text>设置为付费图册</text>
+        </view>
+        <view class="input-area">
+          <switch class="switch-class" bindchange="switchPay" name="is_pay" checked="{{isPay}}" />
+        </view>
+      </view>
+      <block wx:if="{{isPay == true}}">
+        <view class="cells last-line">
+          <view class="cells-title">
+            <text>打赏金额</text>
+          </view>
+          <view class="input-area">
+            <picker bindchange="bindPickerChange" value="{{payIndex}}" range="{{payArray}}" name="pay_money">
+              <text>{{payArray[payIndex]}}</text>
+            </picker>
+            <image src="/images/more.png"></image>
+          </view>
+        </view>
+      </block>
+    </block>
+  </view>
+
+  <view class="form-button">
+    <button form-type="submit">确认</button>
+  </view>
+
+  <view class="delete-button" bindtap="bindDelete" wx:if="{{album_id != 0}}">
+    <text>删除图册</text>
+  </view>
+</form>

@@ -1,0 +1,62 @@
+<view class="container-page">
+  <view class="title title-fixed">
+    <view class="text">
+      <text>发现</text>
+    </view>
+    <view class="line"></view>
+  </view>
+
+  <view class="scroll-subject">
+    <scroll-view class="subject" scroll-x>
+      <block wx:for="{{subjectList}}">
+        <view class="block" bindtap="bindSubject" data-subject_id="{{item.subject_id}}" data-subject_name="{{item.name}}">
+          <image src="{{item.background_url}}" mode="aspectFill"></image>
+          <view class="mongolia"></view>
+          <view class="text">
+            <text>#{{item.name}}</text>
+          </view>
+        </view>
+      </block>
+    </scroll-view>
+  </view>
+
+  <view class="content">
+    <block wx:for="{{albumList}}">
+      <view class="block">
+        <block wx:if="{{item.cover_url != '' && item.cover_url != null}}">
+          <image src="{{item.cover_url}}" mode="aspectFill" bindtap="bindAlbum" data-album_id="{{item.album_id}}"></image>
+        </block>
+        <block wx:else>
+          <view class="no-coverUrl" bindtap="bindAlbum" data-album_id="{{item.album_id}}">
+            <image src="/images/default-image.png" mode="aspectFill"></image>
+          </view>
+        </block>
+        <view class="info">
+          <view class="user" bindtap="bindUser" data-user_id="{{item.user_id}}">
+            <image src="{{item.avatar_url}}" mode="aspectFill"></image>
+            <text class="text">{{item.user_name}}</text>
+          </view>
+          <view class="data" bindtap="bindLike" data-album_id="{{item.album_id}}">
+            <block wx:if="{{item.is_collect == 1}}">
+              <image src="/images/collect.png"></image>
+            </block>
+            <block wx:else>
+              <image src="/images/no-collect.png"></image>
+            </block>
+            <text class="text">{{item.like_num}}</text>
+          </view>
+        </view>
+      </view>
+    </block>
+  </view>
+  <block wx:if="{{albumList.length != 0 && albumList.length > 4}}">
+    <view class="under-info">
+      <block wx:if="{{loadAllData}}">
+        <text>已加载全部</text>
+      </block>
+      <block wx:else>
+        <text>上拉加载更多</text>
+      </block>
+    </view>
+  </block>
+</view>

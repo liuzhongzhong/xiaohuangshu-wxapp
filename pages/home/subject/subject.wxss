@@ -1,0 +1,95 @@
+/* pages/home/subject/subject.wxss */
+
+.spare-list {
+  display: flex;
+  flex-direction: column;
+  margin-left: 30rpx;
+  margin-top: 30rpx;
+}
+
+.spare-list .spare {
+  width: 690rpx;
+  height: 400rpx;
+  border-radius: 12rpx;
+  flex-direction: column;
+  position: relative;
+  display: inline-block;
+  margin-bottom: 30rpx;
+}
+
+.spare-list .spare image {
+  width: 690rpx;
+  height: 400rpx;
+  border-radius: 12rpx;
+}
+
+.spare-list .spare .no-coverUrl {
+  width: 690rpx;
+  height: 400rpx;
+  border-radius: 12rpx;
+  background-color: rgba(233, 233, 233, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spare-list .spare .no-coverUrl image {
+  width: 80rpx;
+  height: 80rpx;
+}
+
+.spare-list .mongolia {
+  width: 690rpx;
+  height: 400rpx;
+  border-radius: 12rpx;
+  opacity: 0.3;
+  background-color: #000;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.spare-list .info {
+  width: 690rpx;
+  height: 400rpx;
+  border-radius: 12rpx;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.spare-list .info .info-title {
+  font-size: 42rpx;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 1);
+  margin-top: 40rpx;
+  margin-left: 40rpx;
+}
+
+.spare-list .info .data {
+  font-size: 24rpx;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 1);
+  margin-top: 15rpx;
+  margin-left: 40rpx;
+}
+
+.default-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.default-info image {
+  width: 150rpx;
+  height: 150rpx;
+}
+
+.default-info text {
+  font-size: 28rpx;
+  color: #b2b2b2;
+  margin-top: 30rpx;
+}

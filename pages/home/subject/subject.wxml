@@ -1,0 +1,36 @@
+<!--pages/home/subject/subject.wxml-->
+<block wx:if="{{subjectlList && subjectlList != ''}}">
+  <view class="spare-list">
+    <block wx:for="{{subjectlList}}">
+      <view class="spare" bindtap="bindAlbum" data-album_id="{{item.album_id}}" data-layout="2">
+        <block wx:if="{{item.cover_url != '' && item.cover_url != null}}">
+          <image src="{{item.cover_url}}" mode="aspectFill"></image>
+        </block>
+        <block wx:else>
+          <view class="no-coverUrl">
+            <image src="/images/default-image.png" mode="aspectFill"></image>
+          </view>
+        </block>
+        <view class="mongolia"></view>
+        <view class="info">
+          <text class="info-title">{{item.name}}</text>
+          <text class="data">{{item.photo_num}}张</text>
+        </view>
+      </view>
+    </block>
+  </view>
+  <view class="under-info">
+    <block wx:if="{{loadAllData == true && subjectlList.length > 4}}">
+      <text>已加载全部</text>
+    </block>
+    <block wx:elif="{{loadAllData == false && subjectlList.length > 4}}">
+      <text>上拉加载更多</text>
+    </block>
+  </view>
+</block>
+<block wx:else>
+  <view class="default-info" style="height: {{systemInfo.screenHeight - 200}}px;">
+    <image src="/images/default-album-icon.png"></image>
+    <text>专题图册列表为空</text>
+  </view>
+</block>

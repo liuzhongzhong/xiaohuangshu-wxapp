@@ -1,0 +1,265 @@
+<!--pages/home/album/album.wxml-->
+<block wx:if="{{showAlbum == 2}}">
+  <view class="fixed-return black-fixed-return" style="height: {{menuButtonInfoData.bottom + 8}}px;">
+    <view class="return-button" style="margin-top: {{menuButtonInfoData.top}}px; height: {{menuButtonInfoData.height}}px;" bindtap="bindReturn">
+      <image src="/images/return-dark.png"></image>
+      <view class="fixed-title">
+        <text>新建图册</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="null-list" style="height: {{systemInfo.windowHeight - menuButtonInfoData.bottom - 28}}px; width: {{systemInfo.windowWidth}}px; margin-top: {{menuButtonInfoData.bottom + 28}}px">
+    <view class="default-view">
+      <image src="/images/noablum.png"></image>
+      <text>图册空空的，快去上传图片吧~</text>
+    </view>
+    <view class="default-button">
+      <button bindtap="bindChooseImage" data-from_type="2">立即上传图片</button>
+    </view>
+    <view class="text-link" bindtap="bindEditAlbum">
+      <text>编辑图册信息</text>
+    </view>
+  </view>
+</block>
+<block wx:elif="{{showAlbum == 1}}">
+  <view class="fixed-return" style="height: {{menuButtonInfoData.bottom + 8}}px;">
+    <view class="return-button" style="margin-top: {{menuButtonInfoData.top}}px; height: {{menuButtonInfoData.height}}px;" bindtap="bindReturn">
+      <image src="/images/return.png"></image>
+      <text>返回</text>
+    </view>
+  </view>
+
+  <view class="container-page">
+    <view class="header-info">
+      <image src="{{albumInfo.cover_url}}" mode="aspectFill"></image>
+      <view class="mongolia"></view>
+      <view class="mongolia-info">
+        <view class="content">
+          <view class="info">
+            <view class="info-title">
+              <text>{{albumInfo.name}}</text>
+              <block wx:if="{{authorUser == 1}}">
+                <image src="/images/edit.png" bindtap="bindEditAlbum"></image>
+              </block>
+            </view>
+            <view class="userdata" data-user_id="{{albumInfo.user_id}}" bindtap="bindUser">
+              <view class="user">
+                <image src="{{albumInfo.avatar_url}}" mode="aspectFill"></image>
+                <text>{{albumInfo.user_name}}</text>
+              </view>
+              <view class="data">
+                <view class="collect" bindtap="bindLike" data-album_id="{{item.album_id}}">
+                  <block wx:if="{{albumInfo.is_collect == 0}}">
+                    <image src="/images/collect-white.png"></image>
+                  </block>
+                  <block wx:else>
+                    <image src="/images/collect.png"></image>
+                  </block>
+                  <text>{{albumInfo.like_num}}</text>
+                </view>
+                <view class="view">
+                  <image src="/images/view.png"></image>
+                  <text>{{albumInfo.view_num}}</text>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <block wx:if="{{imageList != '' || !imageList}}">
+      <block wx:if="{{layoutModel == 1}}">
+        <!-- 普通布局 -->
+        <view class="image-content-tiling">
+          <block wx:for="{{imageList}}">
+            <block wx:if="{{index%3 == 0}}">
+              <block wx:if="{{batchOperation}}">
+                <view class="image-view-one" bindtap="bindRadio" data-image_id="{{item.image_id}}">
+                  <image src="{{item.image_url}}" class="tiling-image-one" mode="aspectFill"></image>
+                  <view class="image-radio">
+                    <radio value="{{item.image_id}}" checked="{{item.checked}}" />
+                  </view>
+                </view>
+              </block>
+              <block wx:else>
+                <view class="image-view-one" bindtap="bindPreviewImage" data-image_index="{{index}}">
+                  <image src="{{item.image_url}}" class="tiling-image-one" mode="aspectFill"></image>
+                </view>
+              </block>
+            </block>
+            <block wx:elif="{{index%3 == 1}}">
+              <block wx:if="{{batchOperation}}">
+                <view class="image-view-two" bindtap="bindRadio" data-image_id="{{item.image_id}}">
+                  <image src="{{item.image_url}}" class="tiling-image-two" mode="aspectFill"></image>
+                  <view class="image-radio">
+                    <radio value="{{item.image_id}}" checked="{{item.checked}}" />
+                  </view>
+                </view>
+              </block>
+              <block wx:else>
+                <view class="image-view-two" bindtap="bindPreviewImage" data-image_index="{{index}}">
+                  <image src="{{item.image_url}}" class="tiling-image-two" mode="aspectFill"></image>
+                </view>
+              </block>
+            </block>
+            <block wx:elif="{{index%3 == 2}}">
+              <block wx:if="{{batchOperation}}">
+                <view class="image-view-three" bindtap="bindRadio" data-image_id="{{item.image_id}}">
+                  <image src="{{item.image_url}}" class="tiling-image-three" mode="aspectFill"></image>
+                  <view class="image-radio">
+                    <radio value="{{item.image_id}}" checked="{{item.checked}}" />
+                  </view>
+                </view>
+              </block>
+              <block wx:else>
+                <view class="image-view-three" bindtap="bindPreviewImage" data-image_index="{{index}}">
+                  <image src="{{item.image_url}}" class="tiling-image-three" mode="aspectFill"></image>
+                </view>
+              </block>
+            </block>
+          </block>
+        </view>
+      </block>
+      <block wx:elif="{{layoutModel == 2}}">
+        <!-- 流式布局 -->
+        <view class="image-content">
+          <block wx:for="{{imageList}}">
+            <block wx:if="{{index%2 == 0}}">
+              <block wx:if="{{item.layoutModel == 1}}">
+                <view class="image-line-default">
+                  <image class="imageleft" src="{{item.image_url}}" mode="aspectFill" bindtap="bindPreviewImage" data-image_index="{{index}}"></image>
+                  <image class="imageright" src="{{imageList[index+1].image_url}}" mode="aspectFill" bindtap="bindPreviewImage" data-image_index="{{index+1}}"></image>
+                </view>
+              </block>
+              <block wx:elif="{{item.layoutModel == 2}}">
+                <view class="image-line-bigright">
+                  <image class="imageleft" src="{{item.image_url}}" mode="aspectFill" bindtap="bindPreviewImage" data-image_index="{{index}}"></image>
+                  <image class="imageright" src="{{imageList[index+1].image_url}}" mode="aspectFill" bindtap="bindPreviewImage" data-image_index="{{index+1}}"></image>
+                </view>
+              </block>
+              <block wx:elif="{{item.layoutModel == 3}}">
+                <view class="image-line-bigleft">
+                  <image class="imageleft" src="{{item.image_url}}" mode="aspectFill" bindtap="bindPreviewImage" data-image_index="{{index}}"></image>
+                  <image class="imageright" src="{{imageList[index+1].image_url}}" mode="aspectFill" bindtap="bindPreviewImage" data-image_index="{{index+1}}"></image>
+                </view>
+              </block>
+              <block wx:elif="{{item.layoutModel == 4}}">
+                <view class="image-line-bigwidth">
+                  <image class="imageleft" src="{{item.image_url}}" mode="aspectFill" bindtap="bindPreviewImage" data-image_index="{{index}}"></image>
+                  <image class="imageright" src="{{imageList[index+1].image_url}}" mode="aspectFill" bindtap="bindPreviewImage" data-image_index="{{index+1}}"></image>
+                </view>
+              </block>
+              <block wx:elif="{{item.layoutModel == 5}}">
+                <view class="image-line-bigimage-height">
+                  <image class="imageleft" src="{{item.image_url}}" mode="aspectFill" bindtap="bindPreviewImage" data-image_index="{{index}}"></image>
+                </view>
+              </block>
+              <block wx:elif="{{item.layoutModel == 6}}">
+                <view class="image-line-bigimage-width">
+                  <image class="imageleft" src="{{item.image_url}}" mode="aspectFill" bindtap="bindPreviewImage" data-image_index="{{index}}"></image>
+                </view>
+              </block>
+              <block wx:elif="{{item.layoutModel == 7}}">
+                <view class="image-line-bigright-hight">
+                  <image class="imageleft" src="{{item.image_url}}" mode="aspectFill" bindtap="bindPreviewImage" data-image_index="{{index}}"></image>
+                  <image class="imageright" src="{{imageList[index+1].image_url}}" mode="aspectFill" bindtap="bindPreviewImage" data-image_index="{{index+1}}"></image>
+                </view>
+              </block>
+              <block wx:elif="{{item.layoutModel == 8}}">
+                <view class="image-line-bigleft-width">
+                  <image class="imageleft" src="{{item.image_url}}" mode="aspectFill" bindtap="bindPreviewImage" data-image_index="{{index}}"></image>
+                  <image class="imageright" src="{{imageList[index+1].image_url}}" mode="aspectFill" bindtap="bindPreviewImage" data-image_index="{{index+1}}"></image>
+                </view>
+              </block>
+              <block wx:else>
+                <view class="image-line-default">
+                  <image class="imageleft" src="{{item.image_url}}" mode="aspectFill" bindtap="bindPreviewImage" data-image_index="{{index}}"></image>
+                  <image class="imageright" src="{{imageList[index+1].image_url}}" mode="aspectFill" bindtap="bindPreviewImage" data-image_index="{{index+1}}"></image>
+                </view>
+              </block>
+            </block>
+          </block>
+        </view>
+      </block>
+
+
+      <view class="under-info" style="height:{{isFullSucreen == true ? 600 : 500}}rpx;">
+        <block wx:if="{{loadAllData == true && imageList.length > 9}}">
+          <text>共{{totalImage}}张图片</text>
+        </block>
+        <block wx:elif="{{loadAllData == false && imageList != '' && imageList.length > 9}}">
+          <text>上拉加载更多</text>
+        </block>
+      </view>
+
+    </block>
+    <block wx:else>
+      <view class="default-info">
+        <image src="/images/default-album-icon.png"></image>
+        <text>图册内还没有图片哦</text>
+      </view>
+    </block>
+
+
+  </view>
+
+  <!-- 菜单栏 -->
+  <view class="tabbar">
+    <view class="action-area">
+      <block wx:if="{{batchOperation == 1}}">
+        <view class="select-num">
+          <text bindtap="bindBatch">取消({{checkNum}})</text>
+          <text class="select-all" bindtap="bindSelectAll" wx:if="{{select_all == true}}">全不选</text>
+          <text class="select-all" bindtap="bindSelectAll" wx:elif="{{select_all == false}}">全选</text>
+        </view>
+        <view class="select-button-group">
+          <view class="button" bindtap="bindSetCover">
+            <image class="icon" src="/images/cover.png"></image>
+            <text>设为封面</text>
+          </view>
+          <view class="button" bindtap="bindBatchDown">
+            <image class="special-button-icon" src="/images/down.png"></image>
+            <text>批量下载</text>
+          </view>
+          <view class="button" bindtap="bindBatchDelete">
+            <image class="icon" src="/images/delete.png"></image>
+            <text>批量删除</text>
+          </view>
+        </view>
+      </block>
+      <block wx:else>
+        <view class="button-group">
+          <view class="button">
+            <button open-type="share">
+              <image class="icon" src="/images/share.png"></image>
+              <text>分享好友</text>
+            </button>
+          </view>
+          <view class="button" bindtap="bindChangeLayout">
+            <image class="special-button-icon" src="/images/change.png"></image>
+            <text>切换视图</text>
+          </view>
+          <block wx:if="{{layoutModel == 1 && authorUser == 1}}">
+            <view class="button" bindtap="bindBatch">
+              <image class="special-button-icon" src="/images/setting.png"></image>
+              <text>批量管理</text>
+            </view>
+          </block>
+        </view>
+        <block wx:if="{{authorUser == 1}}">
+          <view class="upload-button" bindtap="bindChooseImage" data-from_type="1">
+            <button>上传图片</button>
+          </view>
+        </block>
+        <block wx:elif="{{payAlbum == 1 && isPay == 0}}">
+          <view class="action-button" bindtap="bindPayMoney">
+            <button>打赏查看高清原图</button>
+          </view>
+        </block>
+      </block>
+    </view>
+    <view class="tabbar-full" wx:if="{{isFullSucreen == true}}"></view>
+  </view>
+</block>
